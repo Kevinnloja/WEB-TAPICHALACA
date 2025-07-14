@@ -32,6 +32,7 @@
             --logo-center-height: 160px;
             --logo-right-height: 110px;
             --logo-left-height: 80px;
+            --logo-fourth-height: 100px;
             --temp-color: #e74c3c;
             --hum-color: #0066a1;
             --prec-color: #003366;
@@ -100,6 +101,8 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .logo-container {
@@ -129,6 +132,10 @@
 
         #unl-logo {
             height: var(--logo-right-height);
+        }
+
+        #joinforwater-logo {
+            height: var(--logo-fourth-height);
         }
 
         .station-section {
@@ -906,6 +913,7 @@
                 --logo-left-height: 80px;
                 --logo-center-height: 120px;
                 --logo-right-height: 100px;
+                --logo-fourth-height: 90px;
             }
 
             .date-selector {
@@ -957,6 +965,13 @@
             .size-slider {
                 max-width: 80px;
             }
+
+            :root {
+                --logo-left-height: 70px;
+                --logo-center-height: 100px;
+                --logo-right-height: 85px;
+                --logo-fourth-height: 80px;
+            }
         }
     </style>
 </head>
@@ -964,7 +979,6 @@
 <body>
     <!-- Botón para volver a la pantalla principal -->
     <a href="https://estaciones-citiab.vercel.app/" class="back-to-stations">
-        <br>
         <i class="bi bi-arrow-left"></i> Volver a Visor
     </a>
 
@@ -972,7 +986,8 @@
         <header class="header-section">
             <div class="title-container">
                 <h1>Estación Meteorológica Tapichalaca</h1>
-                <div class="subtitle">Reserva Tapichalaca de la Fundación Jocotoco <br> Cuenca Binacional Mayo Chinchipe </div>
+                <div class="subtitle">Reserva Tapichalaca de la Fundación Jocotoco <br> Cuenca Binacional Mayo Chinchipe
+                </div>
             </div>
 
             <div class="logos-container">
@@ -987,7 +1002,11 @@
                 <div class="logo-container">
                     <img src="https://i.ibb.co/M5yd0kZJ/472789761-1105565828029024-3870823381710171305-n-1.jpg"
                         class="logo" alt="Fundación Jocotoco" id="jocotoco-logo">
-
+                </div>
+                <!-- Nuevo logo añadido -->
+                <div class="logo-container">
+                    <img src="https://i.ibb.co/8DsLxfVm/Whats-App-Image-2025-07-14-at-10-50-08-AM.jpg" class="logo"
+                        alt="Join For Water" id="joinforwater-logo">
                 </div>
             </div>
         </header>
