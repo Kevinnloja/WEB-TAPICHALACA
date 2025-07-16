@@ -1510,105 +1510,105 @@
         }
 
         async function updateChart() {
-  updateChartTitle();
+            updateChartTitle();
 
-  try {
-    const offset = new Date().getTimezoneOffset(); // Ecuador = 300
+            try {
+                const offset = new Date().getTimezoneOffset(); // Ecuador = 300
 
-    // --- RANGO 1: 00:00 a 11:59 ---
-    const start1 = new Date(selectedDate);
-    start1.setHours(0, 0, 0, 0);
+                // --- RANGO 1: 00:00 a 11:59 ---
+                const start1 = new Date(selectedDate);
+                start1.setHours(0, 0, 0, 0);
 
-    const end1 = new Date(selectedDate);
-    end1.setHours(12, 0, 0, 0);
+                const end1 = new Date(selectedDate);
+                end1.setHours(12, 0, 0, 0);
 
-    // --- RANGO 2: 12:00 a 23:59 ---
-    const start2 = new Date(selectedDate);
-    start2.setHours(12, 0, 0, 0);
+                // --- RANGO 2: 12:00 a 23:59 ---
+                const start2 = new Date(selectedDate);
+                start2.setHours(12, 0, 0, 0);
 
-    const end2 = new Date(selectedDate);
-    end2.setDate(end2.getDate() + 1); // día siguiente
-    end2.setHours(0, 0, 0, 0);
+                const end2 = new Date(selectedDate);
+                end2.setDate(end2.getDate() + 1); // día siguiente
+                end2.setHours(0, 0, 0, 0);
 
-    // Convertir todo a UTC
-    const startUTC1 = new Date(start1.getTime() - offset * 60000);
-    const endUTC1 = new Date(end1.getTime() - offset * 60000);
-    const startUTC2 = new Date(start2.getTime() - offset * 60000);
-    const endUTC2 = new Date(end2.getTime() - offset * 60000);
+                // Convertir todo a UTC
+                const startUTC1 = new Date(start1.getTime() - offset * 60000);
+                const endUTC1 = new Date(end1.getTime() - offset * 60000);
+                const startUTC2 = new Date(start2.getTime() - offset * 60000);
+                const endUTC2 = new Date(end2.getTime() - offset * 60000);
 
-    // --- CONSULTA 1 ---
-    const { data: data1, error: error1 } = await supabase
-      .from(TABLE_NAME)
-      .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
-      .gte('tiempo', startUTC1.toISOString())
-      .lt('tiempo', endUTC1.toISOString())
-      .order('tiempo', { ascending: true });
+                // --- CONSULTA 1 ---
+                const { data: data1, error: error1 } = await supabase
+                    .from(TABLE_NAME)
+                    .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
+                    .gte('tiempo', startUTC1.toISOString())
+                    .lt('tiempo', endUTC1.toISOString())
+                    .order('tiempo', { ascending: true });
 
-    if (error1) throw error1;
+                if (error1) throw error1;
 
-    // --- CONSULTA 2 ---
-    const { data: data2, error: error2 } = await supabase
-      .from(TABLE_NAME)
-      .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
-      .gte('tiempo', startUTC2.toISOString())
-      .lt('tiempo', endUTC2.toISOString())
-      .order('tiempo', { ascending: true });
+                // --- CONSULTA 2 ---
+                const { data: data2, error: error2 } = await supabase
+                    .from(TABLE_NAME)
+                    .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
+                    .gte('tiempo', startUTC2.toISOString())
+                    .lt('tiempo', endUTC2.toISOString())
+                    .order('tiempo', { ascending: true });
 
-    if (error2) throw error2;
+                if (error2) throw error2;
 
-    // Unir resultados
-    const chartData = [...(data1 || []), ...(data2 || [])];
+                // Unir resultados
+                const chartData = [...(data1 || []), ...(data2 || [])];
 
-    // --- PROCESAR POR HORA ---
-    const tempData = Array(24).fill(null);
-    const humData = Array(24).fill(null);
-    const precData = Array(24).fill(null);
-    const radData = Array(24).fill(null);
+                // --- PROCESAR POR HORA ---
+                const tempData = Array(24).fill(null);
+                const humData = Array(24).fill(null);
+                const precData = Array(24).fill(null);
+                const radData = Array(24).fill(null);
 
-    const hourlyData = {};
+                const hourlyData = {};
 
-    chartData.forEach(record => {
-      try {
-        const hour = new Date(`1970-01-01T${record.hora}`).getHours();
-        if (!(hour in hourlyData)) {
-          hourlyData[hour] = record;
+                chartData.forEach(record => {
+                    try {
+                        const hour = new Date(`1970-01-01T${record.hora}`).getHours();
+                        if (!(hour in hourlyData)) {
+                            hourlyData[hour] = record;
+                        }
+                    } catch (e) {
+                        console.warn("Hora inválida:", record.hora);
+                    }
+                });
+
+                for (let i = 0; i < 24; i++) {
+                    const record = hourlyData[i];
+                    if (record) {
+                        tempData[i] = record.airTC;
+                        humData[i] = record.Rh;
+                        precData[i] = record.lluvia;
+                        radData[i] = record.slrw;
+                    }
+                }
+
+                // --- ACTUALIZAR GRÁFICOS ---
+                updateSingleChart(tempChart, tempData);
+                updateSingleChart(humChart, humData);
+                updateSingleChart(precChart, precData);
+                updateSingleChart(radChart, radData);
+
+                // --- ESTADÍSTICAS ---
+                updateChartStatsForVariable('airTC', chartData, 'Temp');
+                updateChartStatsForVariable('Rh', chartData, 'Hum');
+                updateChartStatsForVariable('lluvia', chartData, 'Prec');
+                updateChartStatsForVariable('slrw', chartData, 'Rad');
+
+                // --- HORA DE ACTUALIZACIÓN ---
+                const now = new Date();
+                document.querySelector('.time-indicator').textContent =
+                    `Última actualización: ${now.toLocaleTimeString('es-EC')}`;
+
+            } catch (error) {
+                console.error('🔥 Error al actualizar gráfico:', error);
+            }
         }
-      } catch (e) {
-        console.warn("Hora inválida:", record.hora);
-      }
-    });
-
-    for (let i = 0; i < 24; i++) {
-      const record = hourlyData[i];
-      if (record) {
-        tempData[i] = record.airTC;
-        humData[i] = record.Rh;
-        precData[i] = record.lluvia;
-        radData[i] = record.slrw;
-      }
-    }
-
-    // --- ACTUALIZAR GRÁFICOS ---
-    updateSingleChart(tempChart, tempData);
-    updateSingleChart(humChart, humData);
-    updateSingleChart(precChart, precData);
-    updateSingleChart(radChart, radData);
-
-    // --- ESTADÍSTICAS ---
-    updateChartStatsForVariable('airTC', chartData, 'Temp');
-    updateChartStatsForVariable('Rh', chartData, 'Hum');
-    updateChartStatsForVariable('lluvia', chartData, 'Prec');
-    updateChartStatsForVariable('slrw', chartData, 'Rad');
-
-    // --- HORA DE ACTUALIZACIÓN ---
-    const now = new Date();
-    document.querySelector('.time-indicator').textContent =
-      `Última actualización: ${now.toLocaleTimeString('es-EC')}`;
-
-  } catch (error) {
-    console.error('🔥 Error al actualizar gráfico:', error);
-  }
-}
 
 
 
@@ -1722,7 +1722,7 @@
                     // Usar el primer registro como base
                     const firstRecord = group[0];
                     result.push({
-                        tiempo: interval === 'daily' ? "00:00:00" : firstRecord.time,
+                        tiempo: time,
                         fecha: firstRecord.fecha,
                         hora: interval === 'daily' ? "00:00:00" : firstRecord.hora,  // FIX: Set 00:00:00 for daily
                         airTC: calculateAverage(group, 'airTC'),
@@ -1807,7 +1807,7 @@
                 while (hasMoreData) {
                     const { data, error } = await supabase
                         .from(TABLE_NAME)
-                        .select('tiempo, fecha, hora, airTC, lluvia, rh, slrW')
+                        .select('tiempo, fecha, hora, airTC, lluvia, Rh, slrw')
                         .gte('fecha', startDateValue)
                         .lte('fecha', endDateValue)
                         .order('fecha', { ascending: true })
@@ -1852,7 +1852,7 @@
                 ];
 
                 const rows = processedData.map(d => [
-                    formatUTCTimestamp(d.tiempo),
+                    d.fecha,
                     d.hora,
                     d.airTC ? d.airTC.toFixed(2) : '',
                     d.lluvia ? d.lluvia.toFixed(2) : '0.00',
