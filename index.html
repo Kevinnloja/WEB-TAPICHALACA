@@ -2,26 +2,25 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Estación Meteorológica Reserva Tapichalaca</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estación Meteorológica Tapichalaca - CITIAB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-
     <style>
         :root {
-            --primary: #2c6e49;
-            --primary-dark: #1a472e;
-            --secondary: #588157;
+            --primary: #003366;
+            --primary-dark: #001a33;
+            --secondary: #0066a1;
             --light: #f8f9fa;
             --dark: #333;
             --content-color: #555;
-            --station-color: #2c6e49;
+            --station-color: #003366;
             --background: #f0f4f8;
             --card-bg: rgba(255, 255, 255, 0.97);
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -29,10 +28,10 @@
             --gray-light: #e0e0e0;
             --gray-medium: #a0a0a0;
             --gray-dark: #707070;
-            --logo-center-height: 160px;
-            --logo-right-height: 110px;
-            --logo-left-height: 80px;
-            --logo-fourth-height: 100px;
+            --logo-unl-height: 110px;
+            --logo-citiab-height: 160px;
+            --logo-jocotoco-height: 80px;
+            --logo-joinforwater-height: 140px;
             --temp-color: #e74c3c;
             --hum-color: #0066a1;
             --prec-color: #003366;
@@ -99,7 +98,7 @@
 
         .logos-container {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
@@ -122,20 +121,20 @@
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
-        #jocotoco-logo {
-            height: var(--logo-left-height);
+        #unl-logo {
+            height: var(--logo-unl-height);
         }
 
         #citiab-logo {
-            height: var(--logo-center-height);
+            height: var(--logo-citiab-height);
         }
 
-        #unl-logo {
-            height: var(--logo-right-height);
+        #jocotoco-logo {
+            height: var(--logo-jocotoco-height);
         }
 
         #joinforwater-logo {
-            height: var(--logo-fourth-height);
+            height: var(--logo-joinforwater-height);
         }
 
         .station-section {
@@ -245,47 +244,6 @@
             background: #27ae60;
         }
 
-        .station-description {
-            color: var(--content-color);
-            line-height: 1.5;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            text-align: justify;
-        }
-
-        .station-info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .info-item {
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
-        }
-
-        .info-icon {
-            font-size: 1.1rem;
-            min-width: 24px;
-            margin-top: 2px;
-            color: var(--station-color);
-        }
-
-        .info-content h4 {
-            font-weight: 600;
-            margin-bottom: 2px;
-            color: var(--primary);
-            font-size: 0.9rem;
-        }
-
-        .info-content p {
-            font-size: 0.85rem;
-            color: var(--content-color);
-        }
-
-        /* ===== ESTILOS ESPECÍFICOS DE LA ESTACIÓN METEOROLÓGICA ===== */
         .data-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -326,7 +284,7 @@
             color: var(--temp-color);
         }
 
-        .card-dark[data-var="rh"] .icon {
+        .card-dark[data-var="Rh"] .icon {
             color: var(--hum-color);
         }
 
@@ -334,7 +292,7 @@
             color: var(--prec-color);
         }
 
-        .card-dark[data-var="slrW"] .icon {
+        .card-dark[data-var="slrw"] .icon {
             color: var(--rad-color);
         }
 
@@ -416,7 +374,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
-            background: rgba(44, 110, 73, 0.05);
+            background: rgba(0, 51, 102, 0.05);
             padding: 8px;
             border-radius: 8px;
             margin-bottom: 10px;
@@ -457,7 +415,7 @@
             gap: 8px;
             margin-top: 8px;
             padding: 8px;
-            background: rgba(44, 110, 73, 0.05);
+            background: rgba(0, 51, 102, 0.05);
             border-radius: 8px;
         }
 
@@ -518,21 +476,21 @@
         }
 
         .chart-stat.min {
-            color: #2a9d8f;
-            border-left: 4px solid #2a9d8f;
-            background: rgba(42, 157, 143, 0.05);
+            color: #0066a1;
+            border-left: 4px solid #0066a1;
+            background: rgba(0, 102, 161, 0.05);
         }
 
         .chart-stat.avg {
-            color: #2c6e49;
-            border-left: 4px solid #2c6e49;
-            background: rgba(44, 110, 73, 0.05);
+            color: #003366;
+            border-left: 4px solid #003366;
+            background: rgba(0, 51, 102, 0.05);
         }
 
         .chart-stat.total {
-            color: #1a472e;
-            border-left: 4px solid #1a472e;
-            background: rgba(26, 71, 46, 0.05);
+            color: #001a33;
+            border-left: 4px solid #001a33;
+            background: rgba(0, 26, 51, 0.05);
         }
 
         .stat-value {
@@ -910,10 +868,10 @@
             }
 
             :root {
-                --logo-left-height: 80px;
-                --logo-center-height: 120px;
-                --logo-right-height: 100px;
-                --logo-fourth-height: 90px;
+                --logo-unl-height: 80px;
+                --logo-citiab-height: 120px;
+                --logo-jocotoco-height: 100px;
+                --logo-joinforwater-height: 90px;
             }
 
             .date-selector {
@@ -967,10 +925,10 @@
             }
 
             :root {
-                --logo-left-height: 70px;
-                --logo-center-height: 100px;
-                --logo-right-height: 85px;
-                --logo-fourth-height: 80px;
+                --logo-unl-height: 70px;
+                --logo-citiab-height: 100px;
+                --logo-jocotoco-height: 85px;
+                --logo-joinforwater-height: 80px;
             }
         }
     </style>
@@ -979,15 +937,15 @@
 <body>
     <!-- Botón para volver a la pantalla principal -->
     <a href="https://estaciones-citiab.vercel.app/" class="back-to-stations">
-        <i class="bi bi-arrow-left"></i> Volver a Visor
+        <i class="fas fa-arrow-left"></i> Volver a Visor
     </a>
 
     <div class="app-container">
         <header class="header-section">
             <div class="title-container">
                 <h1>Estación Meteorológica Tapichalaca</h1>
-                <div class="subtitle">Reserva Tapichalaca de la Fundación Jocotoco <br> Cuenca Binacional Mayo Chinchipe
-                </div>
+                <div class="subtitle">Reserva Tapichalaca, Zamora Chinchipe, Ecuador<br>Estación de monitoreo ambiental
+                    CITIAB</div>
             </div>
 
             <div class="logos-container">
@@ -1000,13 +958,12 @@
                         class="logo" alt="Logo CITIAB" id="citiab-logo">
                 </div>
                 <div class="logo-container">
+                    <img src="https://i.ibb.co/6cpH5wWs/Whats-App-Image-2025-07-14-at-3-46-22-PM-removebg-preview-1.png"
+                        class="logo" alt="Join For Water" id="joinforwater-logo">
+                </div>
+                <div class="logo-container">
                     <img src="https://i.ibb.co/M5yd0kZJ/472789761-1105565828029024-3870823381710171305-n-1.jpg"
                         class="logo" alt="Fundación Jocotoco" id="jocotoco-logo">
-                </div>
-                <!-- Nuevo logo añadido -->
-                <div class="logo-container">
-                    <img src="https://i.ibb.co/8DsLxfVm/Whats-App-Image-2025-07-14-at-10-50-08-AM.jpg" class="logo"
-                        alt="Join For Water" id="joinforwater-logo">
                 </div>
             </div>
         </header>
@@ -1019,7 +976,7 @@
             <div class="station-card">
                 <div class="card-header">
                     <div class="station-icon">
-                        <i class="bi bi-cloud-sun"></i>
+                        <i class="fas fa-cloud-sun"></i>
                     </div>
                     <div class="station-info">
                         <h3 class="station-name">Datos Actuales</h3>
@@ -1032,28 +989,28 @@
 
                 <div class="data-cards">
                     <div class="card-dark active" data-var="airTC">
-                        <i class="bi bi-thermometer-half icon"></i>
+                        <i class="fas fa-thermometer-half icon"></i>
                         <div class="main-value">--°C</div>
                         <div class="card-label">Temperatura del Aire</div>
                         <div class="card-time">--:--</div>
                     </div>
 
-                    <div class="card-dark" data-var="rh">
-                        <i class="bi bi-droplet icon"></i>
+                    <div class="card-dark" data-var="Rh">
+                        <i class="fas fa-tint icon"></i>
                         <div class="main-value">--%</div>
                         <div class="card-label">Humedad Relativa</div>
                         <div class="card-time">--:--</div>
                     </div>
 
                     <div class="card-dark" data-var="lluvia">
-                        <i class="bi bi-cloud-rain icon"></i>
+                        <i class="fas fa-cloud-rain icon"></i>
                         <div class="main-value">-- mm</div>
                         <div class="card-label">Precipitación</div>
                         <div class="card-time">--:--</div>
                     </div>
 
-                    <div class="card-dark" data-var="slrW">
-                        <i class="bi bi-brightness-high icon"></i>
+                    <div class="card-dark" data-var="slrw">
+                        <i class="fas fa-sun icon"></i>
                         <div class="main-value">-- W/m²</div>
                         <div class="card-label">Radiación Solar</div>
                         <div class="card-time">--:--</div>
@@ -1063,7 +1020,7 @@
                 <div class="header-section">
                     <div></div>
                     <button class="refresh-all-btn" id="refreshAllBtn">
-                        <i class="bi bi-arrow-repeat"></i> Actualizar Todo
+                        <i class="fas fa-sync-alt"></i> Actualizar Todo
                     </button>
                 </div>
 
@@ -1101,16 +1058,16 @@
 
                         <div class="d-flex align-items-end mt-2">
                             <button class="btn btn-success" id="downloadRangeBtn">
-                                <i class="bi bi-download"></i> Descargar datos
+                                <i class="fas fa-download"></i> Descargar datos
                             </button>
                         </div>
                     </div>
 
-                    <div class="info-note">*Datos disponibles desde 9 de julio 2025</div>
+                    <div class="info-note">*Datos disponibles desde 9 julio 2025</div>
                     <div class="date-warning" id="dateWarning">
                         <strong>Nota:</strong> Para obtener todos los datos del rango seleccionado, asegúrese de
-                        seleccionar fechas
-                        válidas. El sistema descargará automáticamente todas las mediciones disponibles para el período
+                        seleccionar fechas válidas. El sistema descargará automáticamente todas las mediciones
+                        disponibles para el período
                         seleccionado.
                     </div>
                 </div>
@@ -1120,7 +1077,7 @@
                     <div class="chart-controls">
                         <div class="chart-control-group">
                             <span class="chart-control-label">
-                                <i class="bi bi-calendar"></i> Seleccione fecha:
+                                <i class="fas fa-calendar"></i> Seleccione fecha:
                             </span>
                             <input type="date" id="chartDatePicker" class="chart-date-picker" />
                         </div>
@@ -1131,7 +1088,7 @@
                     <div class="chart-item">
                         <div class="chart-item-header">
                             <div class="chart-item-title">
-                                <i class="bi bi-thermometer-half" style="color: var(--temp-color);"></i>
+                                <i class="fas fa-thermometer-half" style="color: var(--temp-color);"></i>
                                 Temperatura del Aire (°C)
                             </div>
                         </div>
@@ -1142,16 +1099,17 @@
                         </div>
                         <div class="chart-info-panel">
                             <div class="chart-stat max">
-                                <i class="bi bi-arrow-up"></i> Máx: <span id="maxValueTemp" class="stat-value">--</span>
+                                <i class="fas fa-arrow-up"></i> Máx: <span id="maxValueTemp"
+                                    class="stat-value">--</span>
                                 <span class="stat-date" id="maxDateTemp">--:--</span>
                             </div>
                             <div class="chart-stat min">
-                                <i class="bi bi-arrow-down"></i> Mín: <span id="minValueTemp"
+                                <i class="fas fa-arrow-down"></i> Mín: <span id="minValueTemp"
                                     class="stat-value">--</span>
                                 <span class="stat-date" id="minDateTemp">--:--</span>
                             </div>
                             <div class="chart-stat avg">
-                                <i class="bi bi-dash-lg"></i> Prom: <span id="avgValueTemp" class="stat-value">--</span>
+                                <i class="fas fa-minus"></i> Prom: <span id="avgValueTemp" class="stat-value">--</span>
                             </div>
                         </div>
                     </div>
@@ -1159,7 +1117,7 @@
                     <div class="chart-item">
                         <div class="chart-item-header">
                             <div class="chart-item-title">
-                                <i class="bi bi-droplet" style="color: var(--hum-color);"></i>
+                                <i class="fas fa-tint" style="color: var(--hum-color);"></i>
                                 Humedad Relativa (%)
                             </div>
                         </div>
@@ -1170,16 +1128,16 @@
                         </div>
                         <div class="chart-info-panel">
                             <div class="chart-stat max">
-                                <i class="bi bi-arrow-up"></i> Máx: <span id="maxValueHum" class="stat-value">--</span>
+                                <i class="fas fa-arrow-up"></i> Máx: <span id="maxValueHum" class="stat-value">--</span>
                                 <span class="stat-date" id="maxDateHum">--:--</span>
                             </div>
                             <div class="chart-stat min">
-                                <i class="bi bi-arrow-down"></i> Mín: <span id="minValueHum"
+                                <i class="fas fa-arrow-down"></i> Mín: <span id="minValueHum"
                                     class="stat-value">--</span>
                                 <span class="stat-date" id="minDateHum">--:--</span>
                             </div>
                             <div class="chart-stat avg">
-                                <i class="bi bi-dash-lg"></i> Prom: <span id="avgValueHum" class="stat-value">--</span>
+                                <i class="fas fa-minus"></i> Prom: <span id="avgValueHum" class="stat-value">--</span>
                             </div>
                         </div>
                     </div>
@@ -1187,7 +1145,7 @@
                     <div class="chart-item">
                         <div class="chart-item-header">
                             <div class="chart-item-title">
-                                <i class="bi bi-cloud-rain" style="color: var(--prec-color);"></i>
+                                <i class="fas fa-cloud-rain" style="color: var(--prec-color);"></i>
                                 Precipitación (mm)
                             </div>
                         </div>
@@ -1198,19 +1156,20 @@
                         </div>
                         <div class="chart-info-panel">
                             <div class="chart-stat max">
-                                <i class="bi bi-arrow-up"></i> Máx: <span id="maxValuePrec" class="stat-value">--</span>
+                                <i class="fas fa-arrow-up"></i> Máx: <span id="maxValuePrec"
+                                    class="stat-value">--</span>
                                 <span class="stat-date" id="maxDatePrec">--:--</span>
                             </div>
                             <div class="chart-stat min">
-                                <i class="bi bi-arrow-down"></i> Mín: <span id="minValuePrec"
+                                <i class="fas fa-arrow-down"></i> Mín: <span id="minValuePrec"
                                     class="stat-value">--</span>
                                 <span class="stat-date" id="minDatePrec">--:--</span>
                             </div>
                             <div class="chart-stat avg">
-                                <i class="bi bi-dash-lg"></i> Prom: <span id="avgValuePrec" class="stat-value">--</span>
+                                <i class="fas fa-minus"></i> Prom: <span id="avgValuePrec" class="stat-value">--</span>
                             </div>
                             <div class="chart-stat total">
-                                <i class="bi bi-plus-circle"></i> Total: <span id="totalValuePrec"
+                                <i class="fas fa-plus-circle"></i> Total: <span id="totalValuePrec"
                                     class="stat-value">--</span>
                             </div>
                         </div>
@@ -1219,7 +1178,7 @@
                     <div class="chart-item">
                         <div class="chart-item-header">
                             <div class="chart-item-title">
-                                <i class="bi bi-brightness-high" style="color: var(--rad-color);"></i>
+                                <i class="fas fa-sun" style="color: var(--rad-color);"></i>
                                 Radiación Solar (W/m²)
                             </div>
                         </div>
@@ -1230,16 +1189,16 @@
                         </div>
                         <div class="chart-info-panel">
                             <div class="chart-stat max">
-                                <i class="bi bi-arrow-up"></i> Máx: <span id="maxValueRad" class="stat-value">--</span>
+                                <i class="fas fa-arrow-up"></i> Máx: <span id="maxValueRad" class="stat-value">--</span>
                                 <span class="stat-date" id="maxDateRad">--:--</span>
                             </div>
                             <div class="chart-stat min">
-                                <i class="bi bi-arrow-down"></i> Mín: <span id="minValueRad"
+                                <i class="fas fa-arrow-down"></i> Mín: <span id="minValueRad"
                                     class="stat-value">--</span>
                                 <span class="stat-date" id="minDateRad">--:--</span>
                             </div>
                             <div class="chart-stat avg">
-                                <i class="bi bi-dash-lg"></i> Prom: <span id="avgValueRad" class="stat-value">--</span>
+                                <i class="fas fa-minus"></i> Prom: <span id="avgValueRad" class="stat-value">--</span>
                             </div>
                         </div>
                     </div>
@@ -1259,15 +1218,15 @@
 
                 <div class="contact-info">
                     <div class="contact-item">
-                        <i class="bi bi-geo-alt contact-icon"></i>
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
                         <span>Ciudad Universitaria Guillermo Falconí - Loja - Ecuador</span>
                     </div>
                     <div class="contact-item">
-                        <i class="bi bi-telephone contact-icon"></i>
+                        <i class="fas fa-phone contact-icon"></i>
                         <span>07 2593550</span>
                     </div>
                     <div class="contact-item">
-                        <i class="bi bi-envelope contact-icon"></i>
+                        <i class="fas fa-envelope contact-icon"></i>
                         <span>comunicacion@unl.edu.ec</span>
                     </div>
                 </div>
@@ -1334,35 +1293,35 @@
 
         const variableColors = {
             airTC: '#e74c3c',
-            lluvia: '#457b9d',
-            rh: '#2a9d8f',
-            slrW: '#e9c46a'
+            lluvia: '#003366',
+            Rh: '#0066a1',
+            slrw: '#f1c40f'
         };
 
         const variableMeta = {
             airTC: {
                 label: "Temperatura del Aire",
                 unit: "°C",
-                icon: "bi-thermometer-half",
+                icon: "fa-thermometer-half",
                 color: variableColors.airTC
             },
             lluvia: {
                 label: "Precipitación",
                 unit: "mm",
-                icon: "bi-cloud-rain",
+                icon: "fa-cloud-rain",
                 color: variableColors.lluvia
             },
-            rh: {
+            Rh: {
                 label: "Humedad Relativa",
                 unit: "%",
-                icon: "bi-droplet",
-                color: variableColors.rh
+                icon: "fa-tint",
+                color: variableColors.Rh
             },
-            slrW: {
+            slrw: {
                 label: "Radiación Solar",
                 unit: "W/m²",
-                icon: "bi-brightness-high",
-                color: variableColors.slrW
+                icon: "fa-sun",
+                color: variableColors.slrw
             }
         };
 
@@ -1398,8 +1357,8 @@
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                            titleColor: '#2c6e49',
-                            bodyColor: '#333',
+                            titleColor: '#003366',
+                            bodyColor: '#003366',
                             borderColor: 'rgba(0, 0, 0, 0.05)',
                             borderWidth: 1,
                             padding: 7,
@@ -1423,11 +1382,11 @@
                             title: {
                                 display: true,
                                 text: 'Hora del día',
-                                color: '#2c6e49',
+                                color: '#003366',
                                 font: { weight: 'bold', size: 11 }
                             },
                             ticks: {
-                                color: '#588157',
+                                color: '#003366',
                                 font: { weight: 'bold', size: 9 },
                                 maxRotation: 0,
                                 minRotation: 0,
@@ -1446,11 +1405,11 @@
                             title: {
                                 display: true,
                                 text: 'Valor',
-                                color: '#2c6e49',
+                                color: '#003366',
                                 font: { weight: 'bold', size: 11 }
                             },
                             ticks: {
-                                color: '#588157',
+                                color: '#003366',
                                 font: { weight: 'bold', size: 9 },
                                 padding: 4,
                                 callback: function (value) {
@@ -1479,9 +1438,9 @@
         }
 
         const tempChart = createChart(tempCtx, variableColors.airTC, 'Temperatura del Aire (°C)');
-        const humChart = createChart(humCtx, variableColors.rh, 'Humedad Relativa (%)');
+        const humChart = createChart(humCtx, variableColors.Rh, 'Humedad Relativa (%)');
         const precChart = createChart(precCtx, variableColors.lluvia, 'Precipitación (mm)');
-        const radChart = createChart(radCtx, variableColors.slrW, 'Radiación Solar (W/m²)');
+        const radChart = createChart(radCtx, variableColors.slrw, 'Radiación Solar (W/m²)');
 
         let chartData = [];
         let selectedDate = new Date();
@@ -1506,11 +1465,12 @@
 
                 if (data && data.length > 0) {
                     const latestData = data[0];
+                    console.log('Datos recibidos:', latestData);
 
-                    document.querySelector('.card-dark:nth-child(1) .main-value').textContent = latestData.airTC.toFixed(2) + "°C";
-                    document.querySelector('.card-dark:nth-child(2) .main-value').textContent = latestData.Rh.toFixed(2) + "%";
-                    document.querySelector('.card-dark:nth-child(3) .main-value').textContent = latestData.lluvia.toFixed(2) + " mm";
-                    document.querySelector('.card-dark:nth-child(4) .main-value').textContent = latestData.slrw.toFixed(2) + " W/m²";
+                    document.querySelector('.card-dark[data-var="airTC"] .main-value').textContent = latestData.airTC.toFixed(2) + "°C";
+                    document.querySelector('.card-dark[data-var="Rh"] .main-value').textContent = latestData.Rh.toFixed(2) + "%";
+                    document.querySelector('.card-dark[data-var="lluvia"] .main-value').textContent = latestData.lluvia.toFixed(2) + " mm";
+                    document.querySelector('.card-dark[data-var="slrw"] .main-value').textContent = latestData.slrw.toFixed(2) + " W/m²";
 
                     document.querySelectorAll('.card-time').forEach(el => {
                         el.textContent = latestData.hora ? latestData.hora.substring(0, 5) : '--:--';
@@ -1529,97 +1489,136 @@
 
         // Actualizar animaciones de íconos
         function updateIconAnimations(data) {
-            const tempIcon = document.querySelector('.card-dark:nth-child(1) .icon');
+            const tempIcon = document.querySelector('.card-dark[data-var="airTC"] .icon');
             const tempSpeed = 2 - (data.airTC / 40);
             tempIcon.style.animation = `pulse ${Math.max(0.5, Math.min(2, tempSpeed))}s infinite`;
 
-            const humIcon = document.querySelector('.card-dark:nth-child(2) .icon');
+            const humIcon = document.querySelector('.card-dark[data-var="Rh"] .icon');
             const humSpeed = 3 - (data.Rh / 50);
             humIcon.style.animation = `droplet ${Math.max(1, Math.min(3, humSpeed))}s infinite`;
 
-            const precIcon = document.querySelector('.card-dark:nth-child(3) .icon');
+            const precIcon = document.querySelector('.card-dark[data-var="lluvia"] .icon');
             let precSpeed = 3;
             if (data.lluvia > 0) {
                 precSpeed = 3 - (data.lluvia / 5);
                 precIcon.style.animation = `rain ${Math.max(0.8, Math.min(3, precSpeed))}s infinite`;
             }
 
-            const radIcon = document.querySelector('.card-dark:nth-child(4) .icon');
+            const radIcon = document.querySelector('.card-dark[data-var="slrw"] .icon');
             const radSpeed = 3 - (data.slrw / 500);
             radIcon.style.animation = `shine ${Math.max(1, Math.min(3, radSpeed))}s infinite`;
         }
 
-        // Actualizar gráfica con datos del día seleccionado
         async function updateChart() {
-            updateChartTitle();
+  updateChartTitle();
 
-            try {
-                const fechaStr = formatLocalDate(selectedDate);
+  try {
+    const offset = new Date().getTimezoneOffset(); // Ecuador = 300
 
-                // Obtener datos para el día seleccionado usando el campo 'fecha'
-                const { data, error } = await supabase
-                    .from(TABLE_NAME)
-                    .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
-                    .eq('fecha', fechaStr)
-                    .order('tiempo', { ascending: true });
+    // --- RANGO 1: 00:00 a 11:59 ---
+    const start1 = new Date(selectedDate);
+    start1.setHours(0, 0, 0, 0);
 
-                if (error) throw error;
+    const end1 = new Date(selectedDate);
+    end1.setHours(12, 0, 0, 0);
 
-                // Guardar datos
-                chartData = data || [];
+    // --- RANGO 2: 12:00 a 23:59 ---
+    const start2 = new Date(selectedDate);
+    start2.setHours(12, 0, 0, 0);
 
-                // Preparar datos para las gráficas - interceptando el primer dato de cada hora
-                const tempData = Array(24).fill(null);
-                const humData = Array(24).fill(null);
-                const precData = Array(24).fill(null);
-                const radData = Array(24).fill(null);
+    const end2 = new Date(selectedDate);
+    end2.setDate(end2.getDate() + 1); // día siguiente
+    end2.setHours(0, 0, 0, 0);
 
-                // Organizar datos por hora, tomando el primer valor encontrado para cada hora
-                chartData.forEach(record => {
-                    const hour = parseInt(record.hora.substring(0, 2));
-                    if (hour >= 0 && hour <= 23) {
-                        if (tempData[hour] === null) {
-                            tempData[hour] = record.airTC;
-                        }
-                        if (humData[hour] === null) {
-                            humData[hour] = record.Rh;
-                        }
-                        precData[hour] = (precData[hour] || 0) + (record.lluvia || 0);
+    // Convertir todo a UTC
+    const startUTC1 = new Date(start1.getTime() - offset * 60000);
+    const endUTC1 = new Date(end1.getTime() - offset * 60000);
+    const startUTC2 = new Date(start2.getTime() - offset * 60000);
+    const endUTC2 = new Date(end2.getTime() - offset * 60000);
 
-                        if (radData[hour] === null) {
-                            radData[hour] = record.slrw;
-                        }
-                    }
-                });
+    // --- CONSULTA 1 ---
+    const { data: data1, error: error1 } = await supabase
+      .from(TABLE_NAME)
+      .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
+      .gte('tiempo', startUTC1.toISOString())
+      .lt('tiempo', endUTC1.toISOString())
+      .order('tiempo', { ascending: true });
 
-                // Actualizar cada gráfica
-                updateSingleChart(tempChart, tempData);
-                updateSingleChart(humChart, humData);
-                updateSingleChart(precChart, precData);
-                updateSingleChart(radChart, radData);
+    if (error1) throw error1;
 
-                // Actualizar estadísticas para cada variable
-                updateChartStatsForVariable('airTC', chartData, 'Temp');
-                updateChartStatsForVariable('Rh', chartData, 'Hum');
-                updateChartStatsForVariable('lluvia', chartData, 'Prec');
-                updateChartStatsForVariable('slrw', chartData, 'Rad');
+    // --- CONSULTA 2 ---
+    const { data: data2, error: error2 } = await supabase
+      .from(TABLE_NAME)
+      .select('tiempo, fecha, hora, airTC, Rh, lluvia, slrw')
+      .gte('tiempo', startUTC2.toISOString())
+      .lt('tiempo', endUTC2.toISOString())
+      .order('tiempo', { ascending: true });
 
-                // Actualizar indicador de tiempo
-                const now = new Date();
-                document.querySelector('.time-indicator').textContent =
-                    `Última actualización: ${now.toLocaleTimeString('es-EC')}`;
+    if (error2) throw error2;
 
-            } catch (error) {
-                console.error('Error al actualizar gráfico:', error);
-            }
+    // Unir resultados
+    const chartData = [...(data1 || []), ...(data2 || [])];
+
+    // --- PROCESAR POR HORA ---
+    const tempData = Array(24).fill(null);
+    const humData = Array(24).fill(null);
+    const precData = Array(24).fill(null);
+    const radData = Array(24).fill(null);
+
+    const hourlyData = {};
+
+    chartData.forEach(record => {
+      try {
+        const hour = new Date(`1970-01-01T${record.hora}`).getHours();
+        if (!(hour in hourlyData)) {
+          hourlyData[hour] = record;
         }
+      } catch (e) {
+        console.warn("Hora inválida:", record.hora);
+      }
+    });
+
+    for (let i = 0; i < 24; i++) {
+      const record = hourlyData[i];
+      if (record) {
+        tempData[i] = record.airTC;
+        humData[i] = record.Rh;
+        precData[i] = record.lluvia;
+        radData[i] = record.slrw;
+      }
+    }
+
+    // --- ACTUALIZAR GRÁFICOS ---
+    updateSingleChart(tempChart, tempData);
+    updateSingleChart(humChart, humData);
+    updateSingleChart(precChart, precData);
+    updateSingleChart(radChart, radData);
+
+    // --- ESTADÍSTICAS ---
+    updateChartStatsForVariable('airTC', chartData, 'Temp');
+    updateChartStatsForVariable('Rh', chartData, 'Hum');
+    updateChartStatsForVariable('lluvia', chartData, 'Prec');
+    updateChartStatsForVariable('slrw', chartData, 'Rad');
+
+    // --- HORA DE ACTUALIZACIÓN ---
+    const now = new Date();
+    document.querySelector('.time-indicator').textContent =
+      `Última actualización: ${now.toLocaleTimeString('es-EC')}`;
+
+  } catch (error) {
+    console.error('🔥 Error al actualizar gráfico:', error);
+  }
+}
+
+
+
 
         function updateSingleChart(chart, data) {
             chart.data.datasets[0].data = data;
             chart.update();
         }
 
-        // FUNCIÓN MODIFICADA PARA MOSTRAR SOLO HORA EN MÁXIMOS Y MÍNIMOS
+        // FUNCIÓN MODIFICADA PARA CALCULAR ESTADÍSTICAS DIARIAS CORRECTAS
         function updateChartStatsForVariable(variable, data, suffix) {
             if (!data || data.length === 0) {
                 document.getElementById(`maxValue${suffix}`).textContent = '--';
@@ -1633,6 +1632,7 @@
                 return;
             }
 
+            // Calcular valores para todo el día
             const values = data.map(d => d[variable]);
             const max = Math.max(...values);
             const min = Math.min(...values);
@@ -1649,6 +1649,7 @@
             // Formatear solo la hora (HH:MM) para max y min
             const formatTime = (record) => {
                 if (!record || !record.hora) return '--:--';
+                // Tomar solo los primeros 5 caracteres (HH:MM)
                 return record.hora.substring(0, 5);
             };
 
@@ -1662,59 +1663,82 @@
             }
         }
 
-        // Función para agrupar datos por intervalo
+        // Función para agrupar datos por intervalo exacto
         function groupDataByInterval(data, interval) {
             if (interval === '1min') return data;
 
-            let intervalMs;
-            switch (interval) {
-                case '5min': intervalMs = 5 * 60 * 1000; break;
-                case '15min': intervalMs = 15 * 60 * 1000; break;
-                case '30min': intervalMs = 30 * 60 * 1000; break;
-                case '60min': intervalMs = 60 * 60 * 1000; break;
-                case 'daily': intervalMs = 24 * 60 * 60 * 1000; break;
-                default: intervalMs = 5 * 60 * 1000;
-            }
-
-            const groupedData = [];
-            let currentGroup = [];
-            let currentIntervalStart = null;
+            // Mapa para agrupar por tiempo redondeado
+            const groupedData = {};
 
             data.forEach(record => {
-                const recordTime = new Date(record.tiempo).getTime();
+                const date = new Date(record.tiempo);
+                let roundedTime;
 
-                if (!currentIntervalStart) {
-                    currentIntervalStart = recordTime;
-                }
-
-                if (recordTime < currentIntervalStart + intervalMs) {
-                    currentGroup.push(record);
+                if (interval === 'daily') {
+                    // Agrupar por día completo (hasta 23:59)
+                    roundedTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString();
                 } else {
-                    if (currentGroup.length > 0) {
-                        groupedData.push(aggregateGroup(currentGroup));
-                        currentGroup = [record];
-                        currentIntervalStart = recordTime;
+                    // Calcular minutos totales
+                    const totalMinutes = date.getHours() * 60 + date.getMinutes();
+                    let intervalMinutes;
+
+                    switch (interval) {
+                        case '5min': intervalMinutes = 5; break;
+                        case '15min': intervalMinutes = 15; break;
+                        case '30min': intervalMinutes = 30; break;
+                        case '60min': intervalMinutes = 60; break;
+                        default: intervalMinutes = 60;
                     }
+
+                    // Redondear al intervalo más cercano (hacia abajo)
+                    const roundedMinutes = Math.floor(totalMinutes / intervalMinutes) * intervalMinutes;
+                    const roundedHours = Math.floor(roundedMinutes / 60);
+                    const finalMinutes = roundedMinutes % 60;
+
+                    roundedTime = new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        date.getDate(),
+                        roundedHours,
+                        finalMinutes,
+                        0,
+                        0
+                    ).toISOString();
                 }
+
+                if (!groupedData[roundedTime]) {
+                    groupedData[roundedTime] = [];
+                }
+                groupedData[roundedTime].push(record);
             });
 
-            // Procesar el último grupo
-            if (currentGroup.length > 0) {
-                groupedData.push(aggregateGroup(currentGroup));
+            // Procesar cada grupo
+            const result = [];
+            for (const time in groupedData) {
+                const group = groupedData[time];
+                const aggregated = aggregateGroup(group, interval);
+
+                if (group.length > 0) {
+                    // Usar el primer registro como base
+                    const firstRecord = group[0];
+                    result.push({
+                        tiempo: interval === 'daily' ? "00:00:00" : firstRecord.time,
+                        fecha: firstRecord.fecha,
+                        hora: interval === 'daily' ? "00:00:00" : firstRecord.hora,  // FIX: Set 00:00:00 for daily
+                        airTC: calculateAverage(group, 'airTC'),
+                        lluvia: calculateSum(group, 'lluvia'),
+                        Rh: calculateAverage(group, 'Rh'),
+                        slrw: calculateAverage(group, 'slrw')
+                    });
+                }
             }
 
-            return groupedData;
+            return result;
         }
 
         // Función para agregar datos del grupo
         function aggregateGroup(group) {
-            const fecha = group[0].fecha;
-            const hora = group[0].hora;
-
             return {
-                tiempo: group[0].tiempo,
-                fecha,
-                hora,
                 airTC: calculateAverage(group, 'airTC'),
                 lluvia: calculateSum(group, 'lluvia'),
                 Rh: calculateAverage(group, 'Rh'),
@@ -1737,7 +1761,7 @@
         const downloadRangeData = async () => {
             const btn = document.getElementById('downloadRangeBtn');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Procesando...';
+            btn.innerHTML = '<i class="fas fa-sync-alt spin"></i> Procesando...';
             btn.disabled = true;
 
             const dateWarning = document.getElementById('dateWarning');
@@ -1814,7 +1838,13 @@
                 } else {
                     processedData = groupDataByInterval(allData, interval);
                 }
+                // INVERTIR EL ORDEN DE LOS DATOS (más reciente primero)
+                processedData = processedData.reverse();
 
+                // ELIMINAR EL ÚLTIMO DATO (más reciente)
+                if (allData.length > 0) {
+                    allData.shift();
+                }
                 // Preparar datos para exportación
                 const headers = [
                     'Fecha y Hora en la que se almacena', 'Fecha Sensor', 'Hora Sensor',
@@ -1887,7 +1917,7 @@
         document.getElementById('refreshAllBtn').addEventListener('click', async () => {
             const btn = document.getElementById('refreshAllBtn');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Actualizando...';
+            btn.innerHTML = '<i class="fas fa-sync-alt spin"></i> Actualizando...';
 
             try {
                 await updateDataCards();
@@ -1942,16 +1972,16 @@
 
         const style = document.createElement('style');
         style.innerHTML = `
-      .spin {
-        animation: spin 1s linear infinite;
-        display: inline-block;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `;
+            .spin {
+                animation: spin 1s linear infinite;
+                display: inline-block;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
         document.head.appendChild(style);
     </script>
 </body>
