@@ -1722,6 +1722,7 @@
                     // Usar el primer registro como base
                     const firstRecord = group[0];
                     result.push({
+                        tiempo: interval === 'daily' ? "00:00:00" : firstRecord.time,
                         fecha: firstRecord.fecha,
                         hora: interval === 'daily' ? "00:00:00" : firstRecord.hora,  // FIX: Set 00:00:00 for daily
                         airTC: calculateAverage(group, 'airTC'),
@@ -1806,7 +1807,7 @@
                 while (hasMoreData) {
                     const { data, error } = await supabase
                         .from(TABLE_NAME)
-                        .select('fecha, hora, airTC, lluvia, Rh, slrw')
+                        .select('tiempo, fecha, hora, airTC, lluvia, rh, slrW')
                         .gte('fecha', startDateValue)
                         .lte('fecha', endDateValue)
                         .order('fecha', { ascending: true })
