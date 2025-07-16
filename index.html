@@ -1722,7 +1722,6 @@
                     // Usar el primer registro como base
                     const firstRecord = group[0];
                     result.push({
-                        tiempo: interval === 'daily' ? "00:00:00" : firstRecord.time,
                         fecha: firstRecord.fecha,
                         hora: interval === 'daily' ? "00:00:00" : firstRecord.hora,  // FIX: Set 00:00:00 for daily
                         airTC: calculateAverage(group, 'airTC'),
@@ -1807,7 +1806,7 @@
                 while (hasMoreData) {
                     const { data, error } = await supabase
                         .from(TABLE_NAME)
-                        .select('tiempo, fecha, hora, airTC, lluvia, Rh, slrw')
+                        .select('fecha, hora, airTC, lluvia, Rh, slrw')
                         .gte('fecha', startDateValue)
                         .lte('fecha', endDateValue)
                         .order('fecha', { ascending: true })
@@ -1847,13 +1846,12 @@
                 }
                 // Preparar datos para exportación
                 const headers = [
-                    'Fecha y Hora en la que se almacena', 'Fecha Sensor', 'Hora Sensor',
+                    'Fecha Sensor', 'Hora Sensor',
                     'Temperatura (°C)', 'Precipitación (mm)', 'Humedad (%)', 'Radiación (W/m²)'
                 ];
 
                 const rows = processedData.map(d => [
                     formatUTCTimestamp(d.tiempo),
-                    d.fecha,
                     d.hora,
                     d.airTC ? d.airTC.toFixed(2) : '',
                     d.lluvia ? d.lluvia.toFixed(2) : '0.00',
@@ -1874,7 +1872,6 @@
 
                 // Ajustar ancho de columnas
                 ws['!cols'] = [
-                    { wch: 33 },
                     { wch: 15 },
                     { wch: 15 },
                     { wch: 20 },
