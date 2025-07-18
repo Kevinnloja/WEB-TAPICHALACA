@@ -1089,7 +1089,7 @@
                         <div class="chart-item-header">
                             <div class="chart-item-title">
                                 <i class="fas fa-thermometer-half" style="color: var(--temp-color);"></i>
-                                Temperatura del Aire (°C)
+                                Temperatura del Aire (°C) - Promedio horario
                             </div>
                         </div>
                         <div class="chart-wrapper">
@@ -1118,7 +1118,7 @@
                         <div class="chart-item-header">
                             <div class="chart-item-title">
                                 <i class="fas fa-tint" style="color: var(--hum-color);"></i>
-                                Humedad Relativa (%)
+                                Humedad Relativa (%) - Promedio horario
                             </div>
                         </div>
                         <div class="chart-wrapper">
@@ -1146,7 +1146,7 @@
                         <div class="chart-item-header">
                             <div class="chart-item-title">
                                 <i class="fas fa-cloud-rain" style="color: var(--prec-color);"></i>
-                                Precipitación (mm)
+                                Precipitación (mm) - Suma horaria
                             </div>
                         </div>
                         <div class="chart-wrapper">
@@ -1179,7 +1179,7 @@
                         <div class="chart-item-header">
                             <div class="chart-item-title">
                                 <i class="fas fa-sun" style="color: var(--rad-color);"></i>
-                                Radiación Solar (W/m²)
+                                Radiación Solar (W/m²) - Promedio horario
                             </div>
                         </div>
                         <div class="chart-wrapper">
@@ -1509,6 +1509,60 @@
             radIcon.style.animation = `shine ${Math.max(1, Math.min(3, radSpeed))}s infinite`;
         }
 
+        // Función para calcular promedios y sumas horarias
+        function processHourlyData(data) {
+            // Crear arrays para cada hora (0-23)
+            const hourlyBuckets = Array(24).fill().map(() => ({
+                airTC: [],
+                Rh: [],
+                lluvia: [],
+                slrw: []
+            }));
+
+            // Agrupar datos por hora
+            data.forEach(record => {
+                const hour = parseInt(record.hora.split(':')[0]);
+                if (hour >= 0 && hour <= 23) {
+                    hourlyBuckets[hour].airTC.push(record.airTC);
+                    hourlyBuckets[hour].Rh.push(record.Rh);
+                    hourlyBuckets[hour].lluvia.push(record.lluvia);
+                    hourlyBuckets[hour].slrw.push(record.slrw);
+                }
+            });
+
+            // Calcular promedios y sumas
+            const result = {
+                airTC: Array(24).fill(null),
+                Rh: Array(24).fill(null),
+                lluvia: Array(24).fill(null),
+                slrw: Array(24).fill(null)
+            };
+
+            hourlyBuckets.forEach((bucket, hour) => {
+                if (bucket.airTC.length > 0) {
+                    // Temperatura: promedio
+                    result.airTC[hour] = bucket.airTC.reduce((a, b) => a + b, 0) / bucket.airTC.length;
+                }
+
+                if (bucket.Rh.length > 0) {
+                    // Humedad: promedio
+                    result.Rh[hour] = bucket.Rh.reduce((a, b) => a + b, 0) / bucket.Rh.length;
+                }
+
+                if (bucket.lluvia.length > 0) {
+                    // Precipitación: suma
+                    result.lluvia[hour] = bucket.lluvia.reduce((a, b) => a + b, 0);
+                }
+
+                if (bucket.slrw.length > 0) {
+                    // Radiación solar: promedio
+                    result.slrw[hour] = bucket.slrw.reduce((a, b) => a + b, 0) / bucket.slrw.length;
+                }
+            });
+
+            return result;
+        }
+
         async function updateChart() {
             updateChartTitle();
 
@@ -1557,110 +1611,111 @@
                 if (error2) throw error2;
 
                 // Unir resultados
-                const chartData = [...(data1 || []), ...(data2 || [])];
+                const allData = [...(data1 || []), ...(data2 || [])];
 
-                // --- PROCESAR POR HORA ---
-                const tempData = Array(24).fill(null);
-                const humData = Array(24).fill(null);
-                const precData = Array(24).fill(null);
-                const radData = Array(24).fill(null);
+                // Procesar datos por hora
+                const processedData = processHourlyData(allData);
 
-                const hourlyData = {};
+                // Actualizar gráficas
+                tempChart.data.datasets[0].data = processedData.airTC;
+                humChart.data.datasets[0].data = processedData.Rh;
+                precChart.data.datasets[0].data = processedData.lluvia;
+                radChart.data.datasets[0].data = processedData.slrw;
 
-                chartData.forEach(record => {
-                    try {
-                        const hour = new Date(`1970-01-01T${record.hora}`).getHours();
-                        if (!(hour in hourlyData)) {
-                            hourlyData[hour] = record;
-                        }
-                    } catch (e) {
-                        console.warn("Hora inválida:", record.hora);
-                    }
-                });
+                tempChart.update();
+                humChart.update();
+                precChart.update();
+                radChart.update();
 
-                for (let i = 0; i < 24; i++) {
-                    const record = hourlyData[i];
-                    if (record) {
-                        tempData[i] = record.airTC;
-                        humData[i] = record.Rh;
-                        precData[i] = record.lluvia;
-                        radData[i] = record.slrw;
-                    }
-                }
+                // Actualizar estadísticas
+                updateChartStats(processedData);
 
-                // --- ACTUALIZAR GRÁFICOS ---
-                updateSingleChart(tempChart, tempData);
-                updateSingleChart(humChart, humData);
-                updateSingleChart(precChart, precData);
-                updateSingleChart(radChart, radData);
-
-                // --- ESTADÍSTICAS ---
-                updateChartStatsForVariable('airTC', chartData, 'Temp');
-                updateChartStatsForVariable('Rh', chartData, 'Hum');
-                updateChartStatsForVariable('lluvia', chartData, 'Prec');
-                updateChartStatsForVariable('slrw', chartData, 'Rad');
-
-                // --- HORA DE ACTUALIZACIÓN ---
+                // Hora de actualización
                 const now = new Date();
                 document.querySelector('.time-indicator').textContent =
                     `Última actualización: ${now.toLocaleTimeString('es-EC')}`;
 
             } catch (error) {
-                console.error('🔥 Error al actualizar gráfico:', error);
+                console.error('Error al actualizar gráfico:', error);
             }
         }
 
+        // Función para actualizar estadísticas
+        function updateChartStats(processedData) {
+            // Temperatura
+            const tempValues = processedData.airTC.filter(val => val !== null);
+            if (tempValues.length > 0) {
+                const maxTemp = Math.max(...tempValues);
+                const minTemp = Math.min(...tempValues);
+                const avgTemp = tempValues.reduce((a, b) => a + b, 0) / tempValues.length;
 
+                document.getElementById('maxValueTemp').textContent = maxTemp.toFixed(2);
+                document.getElementById('minValueTemp').textContent = minTemp.toFixed(2);
+                document.getElementById('avgValueTemp').textContent = avgTemp.toFixed(2);
 
+                const maxTempHour = processedData.airTC.indexOf(maxTemp);
+                const minTempHour = processedData.airTC.indexOf(minTemp);
+                document.getElementById('maxDateTemp').textContent = `${maxTempHour.toString().padStart(2, '0')}:00`;
+                document.getElementById('minDateTemp').textContent = `${minTempHour.toString().padStart(2, '0')}:00`;
+            }
+
+            // Humedad
+            const humValues = processedData.Rh.filter(val => val !== null);
+            if (humValues.length > 0) {
+                const maxHum = Math.max(...humValues);
+                const minHum = Math.min(...humValues);
+                const avgHum = humValues.reduce((a, b) => a + b, 0) / humValues.length;
+
+                document.getElementById('maxValueHum').textContent = maxHum.toFixed(2);
+                document.getElementById('minValueHum').textContent = minHum.toFixed(2);
+                document.getElementById('avgValueHum').textContent = avgHum.toFixed(2);
+
+                const maxHumHour = processedData.Rh.indexOf(maxHum);
+                const minHumHour = processedData.Rh.indexOf(minHum);
+                document.getElementById('maxDateHum').textContent = `${maxHumHour.toString().padStart(2, '0')}:00`;
+                document.getElementById('minDateHum').textContent = `${minHumHour.toString().padStart(2, '0')}:00`;
+            }
+
+            // Precipitación
+            const precValues = processedData.lluvia.filter(val => val !== null);
+            if (precValues.length > 0) {
+                const maxPrec = Math.max(...precValues);
+                const minPrec = Math.min(...precValues);
+                const totalPrec = precValues.reduce((a, b) => a + b, 0);
+                const avgPrec = totalPrec / precValues.length;
+
+                document.getElementById('maxValuePrec').textContent = maxPrec.toFixed(2);
+                document.getElementById('minValuePrec').textContent = minPrec.toFixed(2);
+                document.getElementById('avgValuePrec').textContent = avgPrec.toFixed(2);
+                document.getElementById('totalValuePrec').textContent = totalPrec.toFixed(2) + " mm";
+
+                const maxPrecHour = processedData.lluvia.indexOf(maxPrec);
+                const minPrecHour = processedData.lluvia.indexOf(minPrec);
+                document.getElementById('maxDatePrec').textContent = `${maxPrecHour.toString().padStart(2, '0')}:00`;
+                document.getElementById('minDatePrec').textContent = `${minPrecHour.toString().padStart(2, '0')}:00`;
+            }
+
+            // Radiación solar
+            const radValues = processedData.slrw.filter(val => val !== null);
+            if (radValues.length > 0) {
+                const maxRad = Math.max(...radValues);
+                const minRad = Math.min(...radValues);
+                const avgRad = radValues.reduce((a, b) => a + b, 0) / radValues.length;
+
+                document.getElementById('maxValueRad').textContent = maxRad.toFixed(2);
+                document.getElementById('minValueRad').textContent = minRad.toFixed(2);
+                document.getElementById('avgValueRad').textContent = avgRad.toFixed(2);
+
+                const maxRadHour = processedData.slrw.indexOf(maxRad);
+                const minRadHour = processedData.slrw.indexOf(minRad);
+                document.getElementById('maxDateRad').textContent = `${maxRadHour.toString().padStart(2, '0')}:00`;
+                document.getElementById('minDateRad').textContent = `${minRadHour.toString().padStart(2, '0')}:00`;
+            }
+        }
 
         function updateSingleChart(chart, data) {
             chart.data.datasets[0].data = data;
             chart.update();
-        }
-
-        // FUNCIÓN MODIFICADA PARA CALCULAR ESTADÍSTICAS DIARIAS CORRECTAS
-        function updateChartStatsForVariable(variable, data, suffix) {
-            if (!data || data.length === 0) {
-                document.getElementById(`maxValue${suffix}`).textContent = '--';
-                document.getElementById(`minValue${suffix}`).textContent = '--';
-                document.getElementById(`avgValue${suffix}`).textContent = '--';
-                document.getElementById(`maxDate${suffix}`).textContent = '--:--';
-                document.getElementById(`minDate${suffix}`).textContent = '--:--';
-                if (suffix === 'Prec') {
-                    document.getElementById(`totalValue${suffix}`).textContent = '--';
-                }
-                return;
-            }
-
-            // Calcular valores para todo el día
-            const values = data.map(d => d[variable]);
-            const max = Math.max(...values);
-            const min = Math.min(...values);
-            const avg = values.reduce((a, b) => a + b, 0) / values.length;
-
-            // Encontrar registros para max y min
-            const maxRecord = data.find(d => d[variable] === max);
-            const minRecord = data.find(d => d[variable] === min);
-
-            document.getElementById(`maxValue${suffix}`).textContent = max.toFixed(2);
-            document.getElementById(`minValue${suffix}`).textContent = min.toFixed(2);
-            document.getElementById(`avgValue${suffix}`).textContent = avg.toFixed(2);
-
-            // Formatear solo la hora (HH:MM) para max y min
-            const formatTime = (record) => {
-                if (!record || !record.hora) return '--:--';
-                // Tomar solo los primeros 5 caracteres (HH:MM)
-                return record.hora.substring(0, 5);
-            };
-
-            document.getElementById(`maxDate${suffix}`).textContent = formatTime(maxRecord);
-            document.getElementById(`minDate${suffix}`).textContent = formatTime(minRecord);
-
-            // Calcular suma total solo para precipitación
-            if (suffix === 'Prec') {
-                const total = values.reduce((a, b) => a + b, 0);
-                document.getElementById(`totalValue${suffix}`).textContent = total.toFixed(2) + " mm";
-            }
         }
 
         // Función para agrupar datos por intervalo exacto
@@ -1844,6 +1899,10 @@
                 // ELIMINAR EL ÚLTIMO DATO (más reciente)
                 if (allData.length > 0) {
                     allData.shift();
+                }
+                // ELIMINAR EL DATO MÁS ANTIGUO
+                if (allData.length > 0) {
+                    allData.pop();
                 }
                 // Preparar datos para exportación
                 const headers = [
