@@ -1730,8 +1730,8 @@
                 let roundedTime;
 
                 if (interval === 'daily') {
-                    // Agrupar por día completo (hasta 23:59)
-                    roundedTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString();
+                    // Agrupar por fecha directamente (sin hora)
+                    roundedTime = record.fecha; // agrupación 100% confiable por campo fecha
                 } else {
                     // Calcular minutos totales
                     const totalMinutes = date.getHours() * 60 + date.getMinutes();
@@ -1895,15 +1895,6 @@
                 }
                 // INVERTIR EL ORDEN DE LOS DATOS (más reciente primero)
                 processedData = processedData.reverse();
-
-                // ELIMINAR EL ÚLTIMO DATO (más reciente)
-                if (allData.length > 0) {
-                    allData.shift();
-                }
-                // ELIMINAR EL DATO MÁS ANTIGUO
-                if (allData.length > 0) {
-                    allData.pop();
-                }
                 // Preparar datos para exportación
                 const headers = [
                     'Fecha Sensor', 'Hora Sensor',
