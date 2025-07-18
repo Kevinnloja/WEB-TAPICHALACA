@@ -36,6 +36,13 @@
             --hum-color: #0066a1;
             --prec-color: #003366;
             --rad-color: #f1c40f;
+            --logo-belgium-height: 65px;
+            --logo-flanders-height: 70px;
+            --logo-protos-height: 70px;
+            --logo-unj-height: 70px;
+            --logo-nci-height: 70px;
+            --logo-joinforwater-coop-height: 70px;
+            --logo-jocotoco-coop-height: 70px;
         }
 
         * {
@@ -840,6 +847,125 @@
             }
         }
 
+        /* ===== SECCIÓN DE COOPERANTES ===== */
+        .cooperantes-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .cooperantes-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .cooperantes-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .cooperantes-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .cooperante-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .cooperante-logo-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+            background: white;
+        }
+
+        .cooperante-logo {
+            object-fit: contain;
+            transition: all 0.3s ease;
+            filter: grayscale(20%);
+        }
+
+        .cooperante-logo-container:hover .cooperante-logo {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        #belgium-logo {
+            height: var(--logo-belgium-height);
+        }
+
+        #flanders-logo {
+            height: var(--logo-flanders-height);
+        }
+
+        #protos-logo {
+            height: var(--logo-protos-height);
+        }
+
+        #unj-logo {
+            height: var(--logo-unj-height);
+            width: 180px;
+            /* Ancho fijo para mantener proporción */
+            object-fit: contain;
+            /* Asegura que mantenga proporciones */
+        }
+
+        #nci-logo {
+            height: var(--logo-nci-height);
+        }
+
+        #joinforwater-coop-logo {
+            height: var(--logo-joinforwater-coop-height);
+        }
+
+        #jocotoco-coop-logo {
+            height: var(--logo-jocotoco-coop-height);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Ajuste del contenedor de logos para pantallas grandes */
+        @media (min-width: 1200px) {
+            .cooperantes-logos {
+                gap: 20px;
+                /* Más espacio entre logos */
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1100px) {
             .charts-grid {
@@ -872,6 +998,13 @@
                 --logo-citiab-height: 120px;
                 --logo-jocotoco-height: 100px;
                 --logo-joinforwater-height: 90px;
+                --logo-belgium-height: 60px;
+                --logo-flanders-height: 60px;
+                --logo-protos-height: 60px;
+                --logo-unj-height: 60px;
+                --logo-nci-height: 60px;
+                --logo-joinforwater-coop-height: 60px;
+                --logo-jocotoco-coop-height: 60px;
             }
 
             .date-selector {
@@ -880,6 +1013,15 @@
 
             .chart-controls {
                 flex-wrap: wrap;
+            }
+
+            .cooperantes-logos {
+                gap: 12px;
+            }
+
+            #unj-logo {
+                width: 140px;
+                /* Ajuste para móviles */
             }
         }
 
@@ -905,6 +1047,10 @@
                 margin-bottom: 10px;
                 width: 100%;
             }
+
+            .cooperantes-logos {
+                gap: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -929,6 +1075,22 @@
                 --logo-citiab-height: 100px;
                 --logo-jocotoco-height: 85px;
                 --logo-joinforwater-height: 80px;
+                --logo-belgium-height: 50px;
+                --logo-flanders-height: 50px;
+                --logo-protos-height: 50px;
+                --logo-unj-height: 50px;
+                --logo-nci-height: 50px;
+                --logo-joinforwater-coop-height: 50px;
+                --logo-jocotoco-coop-height: 50px;
+            }
+
+            .cooperantes-logos {
+                gap: 8px;
+            }
+
+            #unj-logo {
+                width: 120px;
+                /* Ajuste para móviles pequeños */
             }
         }
     </style>
@@ -1200,6 +1362,41 @@
                             <div class="chart-stat avg">
                                 <i class="fas fa-minus"></i> Prom: <span id="avgValueRad" class="stat-value">--</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DE COOPERANTES -->
+                <div class="cooperantes-section">
+                    <div class="cooperantes-title">Con el apoyo de:</div>
+                    <div class="cooperantes-logos">
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/7Bfkpg8/Belgium-CMYK.jpg" alt="Cooperación Belga"
+                                class="cooperante-logo" id="belgium-logo">
+                        </div>
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/23nDmtnm/Flanders-en-amarillo.png" alt="Flanders"
+                                class="cooperante-logo" id="flanders-logo">
+                        </div>
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/v6Kn8RLf/Join-For-Water-cmyk.png" alt="Join For Water"
+                                class="cooperante-logo" id="joinforwater-coop-logo">
+                        </div>
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/60TJW3t1/3-Protos-Andes.jpg" alt="Protos Andes"
+                                class="cooperante-logo" id="protos-logo">
+                        </div>
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/pjwV3RZb/logo-Jocotoco.png" alt="Fundación Jocotoco"
+                                class="cooperante-logo" id="jocotoco-coop-logo">
+                        </div>
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/cXYMw668/jaen-1.jpg" alt="Universidad Nacional de Jaén"
+                                class="cooperante-logo" id="unj-logo">
+                        </div>
+                        <div class="cooperante-logo-container">
+                            <img src="https://i.ibb.co/3XrwLkr/NCI-Shaker-Original-Spanish-RGB.png" alt="NCI"
+                                class="cooperante-logo" id="nci-logo">
                         </div>
                     </div>
                 </div>
