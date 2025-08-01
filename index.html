@@ -2350,10 +2350,10 @@
                 const rows = processedData.map(d => [
                     d.fecha,
                     d.hora,
-                    d.airTC ? d.airTC.toFixed(2) : '',
+                    d.airTC ? d.airTC.toFixed(2) : '0.00',
                     d.lluvia ? d.lluvia.toFixed(2) : '0.00',
-                    d.Rh ? d.Rh.toFixed(2) : '',
-                    d.slrw ? d.slrw.toFixed(2) : ''
+                    d.Rh ? d.Rh.toFixed(2) : '0.00',
+                    d.slrw ? d.slrw.toFixed(2) : '0.00'
                 ]);
 
                 // Crear hoja de cálculo
