@@ -43,6 +43,7 @@
             --logo-nci-height: 70px;
             --logo-joinforwater-coop-height: 70px;
             --logo-jocotoco-coop-height: 70px;
+            --flag-size: 24px;
         }
 
         * {
@@ -973,6 +974,8 @@
             right: 20px;
             z-index: 1000;
             transition: all 0.3s ease;
+            display: flex;
+            gap: 5px;
         }
 
         .btn-lang {
@@ -998,8 +1001,16 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-lang i {
-            font-size: 1.1rem;
+        .btn-lang.active {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .flag-icon {
+            width: var(--flag-size);
+            height: var(--flag-size);
+            border-radius: 50%;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
         }
 
         .lang-text-mobile {
@@ -1045,6 +1056,7 @@
                 --logo-nci-height: 60px;
                 --logo-joinforwater-coop-height: 60px;
                 --logo-jocotoco-coop-height: 60px;
+                --flag-size: 20px;
             }
 
             .date-selector {
@@ -1141,6 +1153,7 @@
                 --logo-nci-height: 50px;
                 --logo-joinforwater-coop-height: 50px;
                 --logo-jocotoco-coop-height: 50px;
+                --flag-size: 18px;
             }
 
             .cooperantes-logos {
@@ -1164,6 +1177,26 @@
                 min-width: 50px;
             }
         }
+    </style>
+</head>
+
+<body>
+  <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estação Meteorológica Tapichalaca - CITIAB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ... (todos los estilos CSS anteriores permanecen iguales) ... */
     </style>
 </head>
 
@@ -1525,7 +1558,7 @@
         );
         const TABLE_NAME = 'tapichalaca';
 
-        // Sistema de traducción mejorado
+        // Sistema de traducción mejorado con portugués
         const translations = {
             es: {
                 back: "Volver a Visor",
@@ -1567,10 +1600,8 @@
                 footerCopyright: "&copy; 2025 CITIAB - Universidad Nacional de Loja. Todos los derechos reservados.",
                 langText: "ES",
                 cooperantesTitle: "Con el apoyo de:",
-                // Nuevas traducciones para ejes
                 axisX: "Hora del día",
                 axisY: "Valor",
-                // Nuevas traducciones para opciones de formato
                 formatOptionExcel: "Excel (.xlsx)",
                 formatOptionCSV: "CSV (.csv)"
             },
@@ -1614,10 +1645,53 @@
                 footerCopyright: "&copy; 2025 CITIAB - National University of Loja. All rights reserved.",
                 langText: "EN",
                 cooperantesTitle: "With the support of:",
-                // Nuevas traducciones para ejes
                 axisX: "Time of day",
                 axisY: "Value",
-                // Nuevas traducciones para opciones de formato
+                formatOptionExcel: "Excel (.xlsx)",
+                formatOptionCSV: "CSV (.csv)"
+            },
+            pt: {
+                back: "Voltar ao Painel",
+                mainTitle: "Estação Meteorológica Tapichalaca",
+                subtitle: "Reserva Tapichalaca, Zamora Chinchipe, Equador<br>Estação de monitoramento ambiental CITIAB",
+                sectionTitle: "Monitoramento em Tempo Real",
+                stationName: "Dados Atuais",
+                statusText: "Online - Dados atualizados",
+                labelTemp: "Temperatura do Ar",
+                labelHum: "Umidade Relativa",
+                labelPrec: "Precipitação",
+                labelRad: "Radiação Solar",
+                refreshBtn: "Atualizar Tudo",
+                labelStartDate: "Data de início:",
+                labelEndDate: "Data de término:",
+                labelDownloadInterval: "Intervalo para download:",
+                labelFileFormat: "Formato do arquivo:",
+                downloadBtn: "Baixar dados",
+                dataNote: "*Dados disponíveis desde 9 de julho de 2025",
+                dateWarningStrong: "Nota:",
+                dateWarningText: "Para obter todos os dados do intervalo selecionado, certifique-se de selecionar datas válidas. O sistema baixará automaticamente todas as medições disponíveis para o período selecionado.",
+                chartTitle: "Dados Históricos",
+                labelDatePicker: "Selecione a data:",
+                chartTempTitle: "Temperatura do Ar (°C) - Média horária",
+                chartHumTitle: "Umidade Relativa (%) - Média horária",
+                chartPrecTitle: "Precipitação (mm) - Soma horária",
+                chartRadTitle: "Radiação Solar (W/m²) - Média horária",
+                statMax: "Máx",
+                statMin: "Mín",
+                statAvg: "Méd",
+                statTotal: "Total",
+                timeIndicator: "Última atualização:",
+                footerTitle: "Centro de Pesquisas Tropicais em Meio Ambiente e Biodiversidade (CITIAB)",
+                footerDesc: "Pesquisamos biodiversidade, restauração de paisagens, serviços ecossistêmicos, hidrologia e mudanças climáticas para contribuir com o conhecimento científico e a conservação ambiental.",
+                footerLocation: "Cidade Universitária Guillermo Falconí - Loja - Equador",
+                footerPhone: "07 2593550",
+                footerEmail: "comunicacion@unl.edu.ec",
+                footerCredits: "Desenvolvido pelo Eng. Kevin David Loja Sarmiento em colaboração com Mgs. Juan Dario Quinde e o Centro de Pesquisa CITIAB",
+                footerCopyright: "&copy; 2025 CITIAB - Universidade Nacional de Loja. Todos os direitos reservados.",
+                langText: "PT",
+                cooperantesTitle: "Com o apoio de:",
+                axisX: "Hora do dia",
+                axisY: "Valor",
                 formatOptionExcel: "Excel (.xlsx)",
                 formatOptionCSV: "CSV (.csv)"
             }
@@ -1643,8 +1717,11 @@
         }
 
         function changeLanguage() {
-            // Cambiar idioma
-            currentLang = currentLang === 'es' ? 'en' : 'es';
+            // Rotar entre idiomas: es -> en -> pt -> es...
+            const languages = ['es', 'en', 'pt'];
+            const currentIndex = languages.indexOf(currentLang);
+            const nextIndex = (currentIndex + 1) % languages.length;
+            currentLang = languages[nextIndex];
 
             // Actualizar textos
             document.getElementById('back-link').innerHTML = `<i class="fas fa-arrow-left"></i> ${translations[currentLang].back}`;
@@ -2382,7 +2459,7 @@
                 XLSX.utils.book_append_sheet(wb, ws, 'Datos Meteorológicos');
 
                 // Nombre del archivo
-                const fileName = `Datos_Meteorologicos_Tapichalaca_${startDateValue}_a_${endDateValue}_${interval}`;
+                const fileName = `Dados_Meteorológicos_Tapichalaca_${startDateValue}_a_${endDateValue}_${interval}`;
 
                 if (fileFormat === 'xlsx') {
                     XLSX.writeFile(wb, `${fileName}.xlsx`);
