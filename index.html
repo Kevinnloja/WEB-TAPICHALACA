@@ -1522,94 +1522,118 @@
                     climático para contribuir al conocimiento científico y la conservación ambiental.
                 </p>
 
-                <div class="contact-info">
-                    <div class="contact-item">
+ <!-- Font Awesome -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+                <footer class="footer-contact">
+                    <div class="footer-link">
                         <i class="fas fa-map-marker-alt contact-icon"></i>
-                        <footer>
-  <address id="footer-address"> Ciudad Universitaria Guillermo Falconí, Facultad Agropecuaria – Edificio 83, Segundo Piso, Loja – Ecuador </address> </footer>
+                        <address class="footer-address">Ciudad Universitaria Guillermo Falconí, Facultad Agropecuaria –
+                            Edificio 83, Segundo Piso, Loja – Ecuador</address>
+                        <span class="separator">|</span>
+                        <a href="https://unl.edu.ec/citiab" target="_blank" rel="noopener noreferrer" class="white-link"
+                            aria-label="Página web del CITIAB">
+                            <i class="fas fa-link contact-icon"></i> Página Web
+                        </a>
+                        <span class="separator">|</span>
+                        <a href="https://www.facebook.com/citabunl" target="_blank" rel="noopener noreferrer"
+                            class="white-link" aria-label="Facebook del CITIAB">
+                            <i class="fab fa-facebook contact-icon"></i> Facebook
+                        </a>
+                        <span class="separator">|</span>
+                        <a href="https://www.instagram.com/citiab.oficial?igsh=MWw0cTY4ZW0weHY0aA==" target="_blank"
+                            rel="noopener noreferrer" class="white-link" aria-label="Instagram del CITIAB">
+                            <i class="fab fa-instagram contact-icon"></i> Instagram
+                        </a>
+                        <span class="separator">|</span>
+                        <a href="https://x.com/citiab_UNL?t=Fxk9M0ZWLe3GZyhC7nTMvg&s=08" target="_blank"
+                            rel="noopener noreferrer" class="white-link" aria-label="Cuenta en X del CITIAB">
+                            <i class="fab fa-x-twitter contact-icon"></i> X
+                        </a>
+                    </div>
+                </footer>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<!-- Website -->                    
-<footer>
-  <p id="footer-link">
-    <a href="https://unl.edu.ec/citiab" target="_blank" rel="noopener noreferrer" class="white-link">
-       <i class="fas fa-link contact-icon"></i> &nbsp; Página Web
-    </a>
-  </p>
-</footer>
+                <style>
 
-<style>
-  .white-link {
-    text-decoration: none; /* Quita subrayado  */
-    color: #f8f9fa;
-  }
+                    .footer-link {
+                        display: flex;
+                        flex-wrap: wrap;
+                        /* Si no cabe, baja ordenado */
+                        justify-content: center;
+                        align-items: center;
+                        gap: 8px;
+                    }
 
-  .white-link:hover {
-    text-decoration: underline; /* Opcional: subrayado al pasar el mouse */
-  }
+                    .footer-address {
+                        display: inline;
+                        font-style: normal;
+                        /* Quita cursiva */
+                        margin: 0;
+                        padding: 0;
+                    }
 
-</style>
+                    .white-link {
+                        position: relative;
+                        text-decoration: none;
+                        color: #f8f9fa;
+                        transition: color 0.3s ease;
+                    }
 
-<!-- Facebook -->
-<footer>
-  <p id="footer-link">
-    <a href="https://www.facebook.com/citabunl" target="_blank" rel="noopener noreferrer" class="white-link">
-      <i class="fab fa-facebook contact-icon"></i> &nbsp; Facebook
-    </a>
-  </p>
-</footer>
+                    /* Línea animada al pasar el mouse */
+                    .white-link::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -2px;
+                        left: 0;
+                        width: 0%;
+                        height: 2px;
+                        background: #f8f9fa;
+                        transition: width 0.3s ease;
+                    }
 
-<style>
-  .white-link {
-    text-decoration: none; /* Quita subrayado */
-    color: #f8f9fa;     
-  }
+                    .white-link:hover::after {
+                        width: 100%;
+                    }
 
-  .white-link:hover {
-    text-decoration: underline; /* Subrayado al pasar el mouse */
-  }
-</style>
+                    .contact-icon {
+                        margin-right: 5px;
+                    }
 
-<!-- Instagram -->
-<footer>
-<p id="footer-link">
-    <a href="https://www.instagram.com/citiab.oficial?igsh=MWw0cTY4ZW0weHY0aA==" target="_blank" rel="noopener noreferrer" class="white-link">
-      <i class="fab fa-instagram contact-icon"></i> &nbsp; Instagram
-    </a>
-  </p>
-</footer>
+                    .separator {
+                        margin: 0 6px;
+                        color: #aaa;
+                    }
 
-<style>
-  .white-link {
-    text-decoration: none; /* Quita subrayado */
-    color: #f8f9fa;        
-  }
+                    /* Colores de marca */
+                    .white-link i.fa-facebook {
+                        color: #1877F2;
+                    }
 
-  .white-link:hover {
-    text-decoration: underline; /* Subrayado al pasar el mouse */
-  }
-</style>
+                    .white-link i.fa-instagram {
+                        color: #E4405F;
+                    }
 
-<!-- X -->
-<footer>
-<p id="footer-link">
-    <a href="https://x.com/citiab_UNL?t=Fxk9M0ZWLe3GZyhC7nTMvg&s=08" target="_blank" rel="noopener noreferrer" class="white-link">
-      <i class="fab fa-x contact-icon"></i> &nbsp; X
-    </a>
-  </p>
-</footer>
+                    .white-link i.fa-x-twitter {
+                        color: #000;
+                    }
 
-<style>
-  .white-link {
-    text-decoration: none; /* Quita subrayado */
-    color: #f8f9fa;        
-  }
+                    .white-link i.fa-link {
+                        color: #0dcaf0;
+                    }
 
-  .white-link:hover {
-    text-decoration: underline; /* Subrayado al pasar el mouse */
-  }
-</style> 
+                    /* Responsive */
+                    @media (max-width: 600px) {
+                        .footer-link {
+                            flex-direction: column;
+                            gap: 4px;
+                        }
+
+                        .separator {
+                            display: none;
+                        }
+                    }
+                </style>
+                
                 </div>
 
                 <div class="credits" id="footer-credits">
