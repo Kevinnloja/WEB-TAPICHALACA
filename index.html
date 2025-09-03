@@ -1522,117 +1522,114 @@
                     climático para contribuir al conocimiento científico y la conservación ambiental.
                 </p>
 
- <!-- Font Awesome -->
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-                <footer class="footer-contact">
-                    <div class="footer-link">
-                        <i class="fas fa-map-marker-alt contact-icon"></i>
-                        <address class="footer-address">Ciudad Universitaria Guillermo Falconí, Facultad Agropecuaria –
-                            Edificio 83, Segundo Piso, Loja – Ecuador</address>
-                        <span class="separator">|</span>
-                        <a href="https://unl.edu.ec/citiab" target="_blank" rel="noopener noreferrer" class="white-link"
-                            aria-label="Página web del CITIAB">
-                            <i class="fas fa-link contact-icon"></i> Página Web
-                        </a>
-                        <span class="separator">|</span>
-                        <a href="https://www.facebook.com/citabunl" target="_blank" rel="noopener noreferrer"
-                            class="white-link" aria-label="Facebook del CITIAB">
-                            <i class="fab fa-facebook contact-icon"></i> Facebook
-                        </a>
-                        <span class="separator">|</span>
-                        <a href="https://www.instagram.com/citiab.oficial?igsh=MWw0cTY4ZW0weHY0aA==" target="_blank"
-                            rel="noopener noreferrer" class="white-link" aria-label="Instagram del CITIAB">
-                            <i class="fab fa-instagram contact-icon"></i> Instagram
-                        </a>
-                        <span class="separator">|</span>
-                        <a href="https://x.com/citiab_UNL?t=Fxk9M0ZWLe3GZyhC7nTMvg&s=08" target="_blank"
-                            rel="noopener noreferrer" class="white-link" aria-label="Cuenta en X del CITIAB">
-                            <i class="fab fa-x-twitter contact-icon"></i> X
-                        </a>
-                    </div>
-                </footer>
+<footer class="footer-contact">
+    <div class="footer-link">
+        <i class="fas fa-map-marker-alt contact-icon"></i>
+        <address class="footer-address">Ciudad Universitaria Guillermo Falconí, Facultad Agropecuaria –
+            Edificio 83, Segundo Piso, Loja – Ecuador</address>
+        <span class="separator">|</span>
+        <a href="https://unl.edu.ec/citiab" target="_blank" rel="noopener noreferrer" class="white-link"
+            aria-label="Página web del CITIAB">
+            <i class="fas fa-link contact-icon"></i> Página Web
+        </a>
+        <span class="separator">|</span>
+        <a href="https://www.facebook.com/citabunl" target="_blank" rel="noopener noreferrer"
+            class="white-link" aria-label="Facebook del CITIAB">
+            <i class="fab fa-facebook contact-icon"></i> Facebook
+        </a>
+        <span class="separator">|</span>
+        <a href="https://www.instagram.com/citiab.oficial?igsh=MWw0cTY4ZW0weHY0aA==" target="_blank"
+            rel="noopener noreferrer" class="white-link" aria-label="Instagram del CITIAB">
+            <i class="fab fa-instagram contact-icon"></i> Instagram
+        </a>
+        <span class="separator">|</span>
+        <a href="https://x.com/citiab_UNL?t=Fxk9M0ZWLe3GZyhC7nTMvg&s=08" target="_blank"
+            rel="noopener noreferrer" class="white-link" aria-label="Cuenta en X del CITIAB">
+            <i class="fab fa-x-twitter contact-icon"></i> X
+        </a>
+    </div>
+</footer>
 
-                <style>
+<style>
+    .footer-link {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        font-size: 14.4px; /* Tamaño reducido de la letra */
+    }
 
-                    .footer-link {
-                        display: flex;
-                        flex-wrap: wrap;
-                        /* Si no cabe, baja ordenado */
-                        justify-content: center;
-                        align-items: center;
-                        gap: 8px;
-                    }
+    .footer-address {
+        display: inline;
+        font-style: normal;
+        margin: 0;
+        padding: 0;
+    }
 
-                    .footer-address {
-                        display: inline;
-                        font-style: normal;
-                        /* Quita cursiva */
-                        margin: 0;
-                        padding: 0;
-                    }
+    .white-link {
+        position: relative;
+        text-decoration: none;
+        color: #f8f9fa;
+        transition: color 0.3s ease;
+    }
 
-                    .white-link {
-                        position: relative;
-                        text-decoration: none;
-                        color: #f8f9fa;
-                        transition: color 0.3s ease;
-                    }
+    .white-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background: #f8f9fa;
+        transition: width 0.3s ease;
+    }
 
-                    /* Línea animada al pasar el mouse */
-                    .white-link::after {
-                        content: "";
-                        position: absolute;
-                        bottom: -2px;
-                        left: 0;
-                        width: 0%;
-                        height: 2px;
-                        background: #f8f9fa;
-                        transition: width 0.3s ease;
-                    }
+    .white-link:hover::after {
+        width: 100%;
+    }
 
-                    .white-link:hover::after {
-                        width: 100%;
-                    }
+    .contact-icon {
+        margin-right: 5px;
+    }
 
-                    .contact-icon {
-                        margin-right: 5px;
-                    }
+    .separator {
+        margin: 0 6px;
+        color: #aaa;
+    }
 
-                    .separator {
-                        margin: 0 6px;
-                        color: #aaa;
-                    }
+    /* Colores de marca */
+    .white-link i.fa-facebook {
+        color: #1877F2;
+    }
 
-                    /* Colores de marca */
-                    .white-link i.fa-facebook {
-                        color: #1877F2;
-                    }
+    .white-link i.fa-instagram {
+        color: #E4405F;
+    }
 
-                    .white-link i.fa-instagram {
-                        color: #E4405F;
-                    }
+    .white-link i.fa-x-twitter {
+        color: #000;
+    }
 
-                    .white-link i.fa-x-twitter {
-                        color: #000;
-                    }
+    .white-link i.fa-link {
+        color: #0dcaf0;
+    }
 
-                    .white-link i.fa-link {
-                        color: #0dcaf0;
-                    }
+    /* Responsive */
+    @media (max-width: 600px) {
+        .footer-link {
+            flex-direction: column;
+            gap: 4px;
+        }
 
-                    /* Responsive */
-                    @media (max-width: 600px) {
-                        .footer-link {
-                            flex-direction: column;
-                            gap: 4px;
-                        }
-
-                        .separator {
-                            display: none;
-                        }
-                    }
-                </style>
+        .separator {
+            display: none;
+        }
+    }
+</style>   
                 
                 </div>
 
