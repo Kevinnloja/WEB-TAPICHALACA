@@ -1445,10 +1445,6 @@
                                         id="minValuePrec" class="stat-value">--</span>
                                     <span class="stat-date" id="minDatePrec">--:--</span>
                                 </div>
-                                <div class="chart-stat avg">
-                                    <i class="fas fa-minus"></i> <span id="stat-avg3">Prom</span>: <span
-                                        id="avgValuePrec" class="stat-value">--</span>
-                                </div>
                                 <div class="chart-stat total">
                                     <i class="fas fa-plus-circle"></i> <span id="stat-total">Total</span>: <span
                                         id="totalValuePrec" class="stat-value">--</span>
@@ -2319,9 +2315,12 @@
                 if (!data || data.length === 0) {
                     document.getElementById(`maxValue${suffix}`).textContent = '--';
                     document.getElementById(`minValue${suffix}`).textContent = '--';
-                    document.getElementById(`avgValue${suffix}`).textContent = '--';
                     document.getElementById(`maxDate${suffix}`).textContent = '--:--';
                     document.getElementById(`minDate${suffix}`).textContent = '--:--';
+
+                    if (suffix !== 'Prec') {
+                        document.getElementById(`avgValue${suffix}`).textContent = '--';
+                    }
                     if (suffix === 'Prec') {
                         document.getElementById(`totalValue${suffix}`).textContent = '--';
                     }
@@ -2332,7 +2331,6 @@
                 const values = data.map(d => d[variable]);
                 const max = Math.max(...values);
                 const min = Math.min(...values);
-                const avg = values.reduce((a, b) => a + b, 0) / values.length;
 
                 // Encontrar registros para max y min
                 const maxRecord = data.find(d => d[variable] === max);
@@ -2340,22 +2338,23 @@
 
                 document.getElementById(`maxValue${suffix}`).textContent = max.toFixed(2);
                 document.getElementById(`minValue${suffix}`).textContent = min.toFixed(2);
-                document.getElementById(`avgValue${suffix}`).textContent = avg.toFixed(2);
 
                 // Formatear solo la hora (HH:MM) para max y min
                 const formatTime = (record) => {
                     if (!record || !record.hora) return '--:--';
-                    // Tomar solo los primeros 5 caracteres (HH:MM)
                     return record.hora.substring(0, 5);
                 };
-
                 document.getElementById(`maxDate${suffix}`).textContent = formatTime(maxRecord);
                 document.getElementById(`minDate${suffix}`).textContent = formatTime(minRecord);
 
-                // Calcular suma total solo para precipitación
                 if (suffix === 'Prec') {
+                    // 👉 Para precipitación mostramos SOLO el total
                     const total = values.reduce((a, b) => a + b, 0);
                     document.getElementById(`totalValue${suffix}`).textContent = total.toFixed(2) + " mm";
+                } else {
+                    // 👉 Para las demás variables mostramos el promedio
+                    const avg = values.reduce((a, b) => a + b, 0) / values.length;
+                    document.getElementById(`avgValue${suffix}`).textContent = avg.toFixed(2);
                 }
             }
 
